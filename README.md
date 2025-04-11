@@ -2,23 +2,6 @@
 
 A full-stack budget tracking application built with the MERN stack (MongoDB, Express, React, Node.js).
 
-## Project Structure
-
-```
-budget-app/
-├── client/             # React frontend
-│   ├── public/         # Static files
-│   └── src/            # React source code
-│       ├── components/ # UI components
-│       ├── context/    # React Context API
-│       └── services/   # API services
-├── server/             # Express backend
-│   ├── config/         # Configuration files
-│   ├── models/         # Mongoose models
-│   └── routes/         # API routes
-└── package.json        # Root package.json for scripts
-```
-
 ## Getting Started
 
 ### Prerequisites
