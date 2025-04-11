@@ -1,63 +1,78 @@
-# Budget App
+# Budget Tracking Application
 
-A modern web application for tracking personal income and expenses. Built with React, Node.js, Express, and MongoDB.
+A full-stack budget tracking application built with the MERN stack (MongoDB, Express, React, Node.js).
 
-## Features
+## Project Structure
 
-- User authentication (register/login)
-- Track income and expenses
-- Categorize transactions
-- View budget overview with charts
-- Responsive design
+```
+budget-app/
+├── client/             # React frontend
+│   ├── public/         # Static files
+│   └── src/            # React source code
+│       ├── components/ # UI components
+│       ├── context/    # React Context API
+│       └── services/   # API services
+├── server/             # Express backend
+│   ├── config/         # Configuration files
+│   ├── models/         # Mongoose models
+│   └── routes/         # API routes
+└── package.json        # Root package.json for scripts
+```
 
-## Prerequisites
+## Getting Started
 
-- Node.js (v14 or higher)
+### Prerequisites
+
+- Node.js (v14+)
 - MongoDB
-- npm or yarn
 
-## Installation
+### Installation
 
-1. Clone the repository:
+1. Clone the repository
+2. Install dependencies:
+
 ```bash
-git clone <repository-url>
-cd budget-app
+npm run install-all
 ```
 
-2. Install backend dependencies:
-```bash
-npm install
-```
+This will install dependencies for the root project, client, and server.
 
-3. Install frontend dependencies:
-```bash
-cd client
-npm install
-```
+### Development
 
-4. Create a `.env` file in the root directory with the following variables:
-```
-PORT=5000
-MONGODB_URI=mongodb://localhost:27017/budget-app
-JWT_SECRET=your_jwt_secret_key
-```
+To run both client and server in development mode:
 
-## Running the Application
-
-1. Start the backend server:
 ```bash
 npm run dev
 ```
 
-2. In a new terminal, start the frontend development server:
+To run only the server:
+
 ```bash
-cd client
-npm start
+npm run server
 ```
 
-The application will be available at:
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:5000
+To run only the client:
+
+```bash
+npm run client
+```
+
+### Environment Variables
+
+Create a `.env` file in the root directory with the following variables:
+
+```
+PORT=5000
+MONGODB_URI=your_mongodb_connection_string
+JWT_SECRET=your_jwt_secret
+```
+
+## Features
+
+- User authentication
+- Budget tracking
+- Transaction management
+- Visual reports and charts
 
 ## API Endpoints
 
