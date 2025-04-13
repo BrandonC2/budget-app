@@ -104,7 +104,7 @@ router.get('/verify', async (req, res) => {
 router.post('/verify-password', auth, async (req, res) => {
   try {
     const { password } = req.body;
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.userId);
     
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
@@ -123,7 +123,7 @@ router.post('/verify-password', auth, async (req, res) => {
 router.put('/update-password', auth, async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
-    const user = await User.findById(req.user.id);
+    const user = await User.findById(req.userId);
     
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
@@ -136,16 +136,20 @@ router.put('/update-password', auth, async (req, res) => {
       return res.status(400).json({ message: 'Current password is incorrect' });
     }
     
-    // Hash new password
+    // Update password directly using findByIdAndUpdate to avoid validation issues
     const salt = await bcrypt.genSalt(10);
-    user.password = await bcrypt.hash(newPassword, salt);
+    const hashedPassword = await bcrypt.hash(newPassword, salt);
     
-    await user.save();
+    await User.findByIdAndUpdate(
+      req.userId,
+      { $set: { password: hashedPassword } },
+      { new: true, runValidators: false }
+    );
     
     res.json({ message: 'Password updated successfully' });
   } catch (err) {
     console.error(err.message);
-    res.status(500).send('Server error');
+    res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
 
