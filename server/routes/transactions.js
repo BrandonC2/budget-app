@@ -2,18 +2,7 @@ const express = require('express');
 const router = express.Router();
 const Transaction = require('../models/Transaction');
 const jwt = require('jsonwebtoken');
-
-// Middleware to verify JWT token
-const auth = async (req, res, next) => {
-  try {
-    const token = req.header('Authorization').replace('Bearer ', '');
-    const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    req.userId = decoded.userId;
-    next();
-  } catch (error) {
-    res.status(401).json({ message: 'Please authenticate' });
-  }
-};
+const auth = require('../middleware/auth');
 
 // Get all transactions for a user
 router.get('/', auth, async (req, res) => {
