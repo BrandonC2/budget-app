@@ -69,6 +69,7 @@ router.post('/login', async (req, res) => {
       user: {
         id: user._id,
         username: user.username,
+        name: user.name,
         email: user.email
       }
     });
@@ -92,6 +93,7 @@ router.get('/verify', async (req, res) => {
       user: {
         id: user._id,
         username: user.username,
+        name: user.name,
         email: user.email
       }
     });
@@ -150,6 +152,43 @@ router.put('/update-password', auth, async (req, res) => {
   } catch (err) {
     console.error(err.message);
     res.status(500).json({ message: 'Server error', error: err.message });
+  }
+});
+
+// Update profile
+router.put('/update-profile', auth, async (req, res) => {
+  try {
+    const { name } = req.body;
+    const user = await User.findById(req.userId);
+    
+    if (!user) {
+      return res.status(404).json({ message: 'User not found' });
+    }
+    
+    // Update both username and name
+    user.username = name;
+    user.name = name;
+    
+    // Save the changes to the database
+    const updatedUser = await user.save();
+    
+    res.json({
+      success: true,
+      message: 'Profile updated successfully',
+      user: {
+        id: updatedUser._id,
+        username: updatedUser.username,
+        name: updatedUser.name,
+        email: updatedUser.email
+      }
+    });
+  } catch (err) {
+    console.error('Profile update error:', err);
+    res.status(500).json({ 
+      success: false,
+      message: 'Server error',
+      error: err.message 
+    });
   }
 });
 
