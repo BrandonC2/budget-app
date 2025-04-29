@@ -46,7 +46,7 @@ npm run install-all
 
 Create `.env` in the root directory:
 ```
-PORT=5000
+PORT=5001
 MONGODB_URI=your_mongodb_connection_string
 JWT_SECRET=your_secret_key
 ```
@@ -66,7 +66,7 @@ npm run client
 
 Access at:
 - Frontend: http://localhost:3000
-- API: http://localhost:5000
+- API: http://localhost:5001
 
 ## API Endpoints
 
