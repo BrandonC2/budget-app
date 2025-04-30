@@ -8,7 +8,11 @@ const auth = require('../middleware/auth');
 // Register new user
 router.post('/register', async (req, res) => {
   try {
-    const { username, email, password } = req.body;
+    const { username, email, password, name } = req.body;
+
+    if (!username || !email || !password || !name) {
+      return res.status(400).json({ message: 'All fields are required' });
+    }
 
     // Check if user already exists
     const existingUser = await User.findOne({ $or: [{ email }, { username }] });
@@ -17,7 +21,7 @@ router.post('/register', async (req, res) => {
     }
 
     // Create new user
-    const user = new User({ username, email, password });
+    const user = new User({ username, email, password, name });
     await user.save();
 
     // Generate JWT token
@@ -32,10 +36,12 @@ router.post('/register', async (req, res) => {
       user: {
         id: user._id,
         username: user.username,
-        email: user.email
+        email: user.email,
+        name: user.name
       }
     });
   } catch (error) {
+    console.error('Register error:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
@@ -74,6 +80,7 @@ router.post('/login', async (req, res) => {
       }
     });
   } catch (error) {
+    console.error('Login error:', error);
     res.status(500).json({ message: 'Server error', error: error.message });
   }
 });
@@ -83,12 +90,12 @@ router.get('/verify', async (req, res) => {
   try {
     const token = req.header('Authorization').replace('Bearer ', '');
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
-    
+
     const user = await User.findById(decoded.userId);
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    
+
     res.json({
       user: {
         id: user._id,
@@ -107,16 +114,15 @@ router.post('/verify-password', auth, async (req, res) => {
   try {
     const { password } = req.body;
     const user = await User.findById(req.userId);
-    
+
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    
+
     const isMatch = await bcrypt.compare(password, user.password);
-    
     res.json({ isValid: isMatch });
   } catch (err) {
-    console.error(err.message);
+    console.error('Password verify error:', err);
     res.status(500).send('Server error');
   }
 });
@@ -126,31 +132,28 @@ router.put('/update-password', auth, async (req, res) => {
   try {
     const { currentPassword, newPassword } = req.body;
     const user = await User.findById(req.userId);
-    
+
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    
-    // Verify current password
+
     const isMatch = await bcrypt.compare(currentPassword, user.password);
-    
     if (!isMatch) {
       return res.status(400).json({ message: 'Current password is incorrect' });
     }
-    
-    // Update password directly using findByIdAndUpdate to avoid validation issues
+
     const salt = await bcrypt.genSalt(10);
     const hashedPassword = await bcrypt.hash(newPassword, salt);
-    
+
     await User.findByIdAndUpdate(
       req.userId,
       { $set: { password: hashedPassword } },
       { new: true, runValidators: false }
     );
-    
+
     res.json({ message: 'Password updated successfully' });
   } catch (err) {
-    console.error(err.message);
+    console.error('Update password error:', err);
     res.status(500).json({ message: 'Server error', error: err.message });
   }
 });
@@ -160,18 +163,16 @@ router.put('/update-profile', auth, async (req, res) => {
   try {
     const { name } = req.body;
     const user = await User.findById(req.userId);
-    
+
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
-    
-    // Update both username and name
+
     user.username = name;
     user.name = name;
-    
-    // Save the changes to the database
+
     const updatedUser = await user.save();
-    
+
     res.json({
       success: true,
       message: 'Profile updated successfully',
@@ -184,12 +185,12 @@ router.put('/update-profile', auth, async (req, res) => {
     });
   } catch (err) {
     console.error('Profile update error:', err);
-    res.status(500).json({ 
+    res.status(500).json({
       success: false,
       message: 'Server error',
-      error: err.message 
+      error: err.message
     });
   }
 });
 
-module.exports = router; 
+module.exports = router;
