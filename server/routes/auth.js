@@ -8,9 +8,9 @@ const auth = require('../middleware/auth');
 // Register new user
 router.post('/register', async (req, res) => {
   try {
-    const { username, email, password, name } = req.body;
+    const { username, email, password } = req.body;
 
-    if (!username || !email || !password || !name) {
+    if (!username || !email || !password) {
       return res.status(400).json({ message: 'All fields are required' });
     }
 
@@ -21,7 +21,7 @@ router.post('/register', async (req, res) => {
     }
 
     // Create new user
-    const user = new User({ username, email, password, name });
+    const user = new User({ username, email, password });
     await user.save();
 
     // Generate JWT token
@@ -36,8 +36,7 @@ router.post('/register', async (req, res) => {
       user: {
         id: user._id,
         username: user.username,
-        email: user.email,
-        name: user.name
+        email: user.email
       }
     });
   } catch (error) {
@@ -75,7 +74,6 @@ router.post('/login', async (req, res) => {
       user: {
         id: user._id,
         username: user.username,
-        name: user.name,
         email: user.email
       }
     });
@@ -100,7 +98,6 @@ router.get('/verify', async (req, res) => {
       user: {
         id: user._id,
         username: user.username,
-        name: user.name,
         email: user.email
       }
     });
@@ -161,15 +158,14 @@ router.put('/update-password', auth, async (req, res) => {
 // Update profile
 router.put('/update-profile', auth, async (req, res) => {
   try {
-    const { name } = req.body;
+    const { username } = req.body;
     const user = await User.findById(req.userId);
 
     if (!user) {
       return res.status(404).json({ message: 'User not found' });
     }
 
-    user.username = name;
-    user.name = name;
+    user.username = username;
 
     const updatedUser = await user.save();
 
@@ -179,7 +175,6 @@ router.put('/update-profile', auth, async (req, res) => {
       user: {
         id: updatedUser._id,
         username: updatedUser.username,
-        name: updatedUser.name,
         email: updatedUser.email
       }
     });
