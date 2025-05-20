@@ -1,4 +1,4 @@
-export const API_URL = 'http://localhost:5001/api';
+export const API_URL = 'https://budget-app-56om.onrender.com'; // local: http://localhost:5001/api
 
 export const API_ENDPOINTS = {
   AUTH: {
