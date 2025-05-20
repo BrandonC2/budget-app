@@ -8,7 +8,6 @@ import {
   Button,
   Link,
   Box,
-  FormHelperText,
 } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
 
