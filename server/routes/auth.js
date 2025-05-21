@@ -4,13 +4,6 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const auth = require('../middleware/auth');
-const cors = require('cors');
-const app = express();
-
-// Enable CORS for Netlify frontend only
-app.use(cors({
-  origin: 'melodic-bubblegum-753e3e.netlify.app', // Replace with your Netlify URL
-}));
 
 // Register new user
 router.post('/register', async (req, res) => {

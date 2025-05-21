@@ -11,9 +11,16 @@ connectDB();
 
 const app = express();
 
+// CORS configuration - Allow only your Netlify frontend URL
+const corsOptions = {
+  origin: 'https://melodic-bubblegum-753e3e.netlify.app', // Replace with your actual Netlify frontend URL
+  methods: ['GET', 'POST', 'PUT', 'DELETE'], // Allowed methods (you can adjust this if necessary)
+  allowedHeaders: ['Content-Type', 'Authorization'], // Allowed headers (including Authorization for JWT token)
+};
+
 // Middleware
-app.use(cors());
-app.use(express.json());
+app.use(cors(corsOptions)); // Apply CORS with the options
+app.use(express.json()); // Parse incoming JSON requests
 
 // Routes
 app.use('/api/auth', require('./routes/auth'));
@@ -28,4 +35,4 @@ app.get('/', (req, res) => {
 const PORT = process.env.PORT || 5000;
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
-}); 
+});
