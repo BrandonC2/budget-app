@@ -45,7 +45,7 @@ import axios from 'axios';
 import { getAuthToken, setAuthToken } from '../services/auth';
 import { useUserPreferences } from '../context/UserPreferencesContext';
 
-const API_URL = 'http://localhost:5001/api';
+const API_URL = 'https://budget-app-56om.onrender.com/api';
 
 const TransactionForm = ({ open, onClose, transaction, onSubmit }) => {
   const theme = useTheme();

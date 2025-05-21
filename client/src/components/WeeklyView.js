@@ -38,7 +38,7 @@ import { useUserPreferences } from '../context/UserPreferencesContext';
 import axios from 'axios';
 import { getAuthToken, setAuthToken } from '../services/auth';
 
-const API_URL = 'http://localhost:5001/api';
+const API_URL = 'https://budget-app-56om.onrender.com/api';
 
 const WeeklyView = () => {
   const theme = useTheme();
