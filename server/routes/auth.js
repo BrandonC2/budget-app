@@ -4,6 +4,11 @@ const jwt = require('jsonwebtoken');
 const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const auth = require('../middleware/auth');
+const cors = require('cors');
+
+// Enable CORS for all domains (You can restrict this to specific domains if needed)
+const app = express();
+app.use(cors());  // This will allow requests from any origin
 
 // Register new user
 router.post('/register', async (req, res) => {
