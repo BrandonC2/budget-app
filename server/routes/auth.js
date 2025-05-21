@@ -5,12 +5,12 @@ const User = require('../models/User');
 const bcrypt = require('bcrypt');
 const auth = require('../middleware/auth');
 const cors = require('cors');
+const app = express();
 
 // Enable CORS for Netlify frontend only
 app.use(cors({
   origin: 'https://your-frontend-domain.netlify.app', // Replace with your Netlify URL
 }));
-
 
 // Register new user
 router.post('/register', async (req, res) => {
