@@ -9,7 +9,7 @@ const app = express();
 
 // Enable CORS for Netlify frontend only
 app.use(cors({
-  origin: 'https://your-frontend-domain.netlify.app', // Replace with your Netlify URL
+  origin: 'melodic-bubblegum-753e3e.netlify.app', // Replace with your Netlify URL
 }));
 
 // Register new user
