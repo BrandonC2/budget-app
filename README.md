@@ -73,10 +73,6 @@ Access at:
 - **Auth**: `/api/auth/register`, `/api/auth/login`
 - **Transactions**: `/api/transactions` (GET, POST, PUT, DELETE)
 
-## License
-
-MIT
-
 ## Contact
 
 Brandon Chau - [GitHub](https://github.com/BrandonC2)
